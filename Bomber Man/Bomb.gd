@@ -1,15 +1,13 @@
 extends StaticBody2D
 
-var explosion_size = 1
-
 var checks = {	"up": $UpCheck,
 				"down": $DownCheck,
 				"left": $LeftCheck,
 				"right": $RightCheck}
 
 
-func create_explosion(e_size):
-	explosion_size = e_size
+func create_explosion():
+	pass
 
 func _on_BombDetonateTimer_timeout():
 	create_explosion()
