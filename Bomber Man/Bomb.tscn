@@ -48,16 +48,17 @@ anim_offset_random = 0.0
 anim_loop = false
 _sections_unfolded = [ "Angular Velocity", "Emission Shape", "Gravity", "Trail" ]
 
-[node name="Bomb" type="StaticBody2D"]
+[node name="Bomb" type="StaticBody2D" index="0"]
 
 input_pickable = false
-collision_layer = 1
-collision_mask = 1
+collision_layer = 2
+collision_mask = 15
 constant_linear_velocity = Vector2( 0, 0 )
 constant_angular_velocity = 0.0
 friction = 1.0
 bounce = 0.0
 script = ExtResource( 1 )
+_sections_unfolded = [ "Collision" ]
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
 
@@ -71,42 +72,36 @@ _sections_unfolded = [ "Visibility" ]
 
 shape = SubResource( 1 )
 
-[node name="BombDetonateTimer" type="Timer" parent="." index="2"]
+[node name="UpCheck" type="RayCast2D" parent="." index="2"]
 
-process_mode = 1
-wait_time = 5.0
-one_shot = true
-autostart = true
-
-[node name="UpCheck" type="RayCast2D" parent="." index="3"]
-
-enabled = false
+enabled = true
 exclude_parent = true
-cast_to = Vector2( 0, -50 )
-collision_mask = 1
+cast_to = Vector2( 0, -100 )
+collision_mask = 15
 
-[node name="DownCheck" type="RayCast2D" parent="." index="4"]
+[node name="DownCheck" type="RayCast2D" parent="." index="3"]
 
-enabled = false
+enabled = true
 exclude_parent = true
-cast_to = Vector2( 0, 50 )
-collision_mask = 1
+cast_to = Vector2( 0, 100 )
+collision_mask = 15
 
-[node name="LeftCheck" type="RayCast2D" parent="." index="5"]
+[node name="LeftCheck" type="RayCast2D" parent="." index="4"]
 
-enabled = false
+enabled = true
 exclude_parent = true
-cast_to = Vector2( 50, 0 )
-collision_mask = 1
+cast_to = Vector2( -100, 0 )
+collision_mask = 15
 
-[node name="RightCheck" type="RayCast2D" parent="." index="6"]
+[node name="RightCheck" type="RayCast2D" parent="." index="5"]
 
-enabled = false
+enabled = true
 exclude_parent = true
-cast_to = Vector2( -50, 0 )
-collision_mask = 1
+cast_to = Vector2( 100, 0 )
+collision_mask = 15
+_sections_unfolded = [ "Transform", "Z Index" ]
 
-[node name="Particles2D" type="Particles2D" parent="." index="7"]
+[node name="Particles2D" type="Particles2D" parent="." index="6"]
 
 position = Vector2( 0, -16 )
 emitting = true
@@ -129,6 +124,22 @@ h_frames = 1
 v_frames = 1
 _sections_unfolded = [ "Drawing", "Process Material", "Textures", "Time", "Transform" ]
 
+[node name="BombDetonateTimer" type="Timer" parent="." index="7"]
+
+process_mode = 1
+wait_time = 2.0
+one_shot = true
+autostart = true
+
+[node name="CollisionWaitTimer" type="Timer" parent="." index="8"]
+
+process_mode = 1
+wait_time = 0.5
+one_shot = true
+autostart = false
+
 [connection signal="timeout" from="BombDetonateTimer" to="." method="_on_BombDetonateTimer_timeout"]
+
+[connection signal="timeout" from="CollisionWaitTimer" to="." method="_on_CollisionWaitTimer_timeout"]
 
 
