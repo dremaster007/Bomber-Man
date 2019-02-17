@@ -3,6 +3,7 @@ extends KinematicBody2D
 export (PackedScene) var Bomb
 export (int) var speed
 
+var bomb_count = 3
 var velocity = Vector2()
 
 func _ready():
@@ -14,11 +15,11 @@ func _physics_process(delta):
 
 func get_input():
 	velocity = Vector2(0,0)
-	var right = Input.is_action_pressed("right")
-	var left = Input.is_action_pressed("left")
-	var up = Input.is_action_pressed("up")
-	var down = Input.is_action_pressed("down")
-	var use_action = Input.is_action_just_pressed("use_action")
+	var right = Input.is_action_pressed("p1_right")
+	var left = Input.is_action_pressed("p1_left")
+	var up = Input.is_action_pressed("p1_up")
+	var down = Input.is_action_pressed("p1_down")
+	var use_action = Input.is_action_just_pressed("p1_use_action")
 	
 	if right:
 		velocity.x += speed
@@ -33,9 +34,12 @@ func get_input():
 		velocity = velocity.normalized()
 	
 	if use_action:
-		place_bomb(position)
+		if bomb_count >= 1:
+			bomb_count -= 1
+			place_bomb(position)
 
 func place_bomb(pos):
 	var b = Bomb.instance()
 	b.position = pos
 	get_parent().add_child(b)
+	b.parent = self
